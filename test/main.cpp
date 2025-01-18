@@ -42,9 +42,7 @@ int main()
         }
 
         if (nalType == H264Parser::NalType::SPS && width == 0 && height == 0)
-        {
             H264Parser::parseSps(nal, nalSize, width, height);
-        }
 
         // Move to the next NAL
         buffer = nal + nalSize;

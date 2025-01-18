@@ -15,17 +15,11 @@ uint8_t *H264Parser::getNal(uint8_t *inputBuffer, int inputBufferSize, NalType &
     for (i = 0; i < inputBufferSize - maxStartCodeLength; i++)
     {
         if (inputBuffer[i] == 0 && inputBuffer[i + 1] == 0 && inputBuffer[i + 2] == 1)
-        {
             startCode = 3;
-        }
         else if (inputBuffer[i] == 0 && inputBuffer[i + 1] == 0 && inputBuffer[i + 2] == 0 && inputBuffer[i + 3] == 1)
-        {
             startCode = 4;
-        }
         else
-        {
             continue;
-        }
 
         nalStart = (&inputBuffer[i + startCode]);
         nalType = static_cast<NalType>(nalStart[0] & 0x1F);
@@ -42,17 +36,11 @@ uint8_t *H264Parser::getNal(uint8_t *inputBuffer, int inputBufferSize, NalType &
     for (; i < inputBufferSize - maxStartCodeLength; i++)
     {
         if (inputBuffer[i] == 0 && inputBuffer[i + 1] == 0 && inputBuffer[i + 2] == 1)
-        {
             startCode = 3;
-        }
         else if (inputBuffer[i] == 0 && inputBuffer[i + 1] == 0 && inputBuffer[i + 2] == 0 && inputBuffer[i + 3] == 1)
-        {
             startCode = 4;
-        }
         else
-        {
             continue;
-        }
 
         uint8_t *nextNal = (&inputBuffer[i + startCode]);
         NalType nextNalType = static_cast<NalType>(nextNal[0] & 0x1F);
@@ -103,9 +91,8 @@ namespace
     {
         uint32_t leadingZeros = 0;
         while (readBits(data, 1, offset) == 0)
-        {
             leadingZeros++;
-        }
+
         return (1 << leadingZeros) - 1 + readBits(data, leadingZeros, offset);
     }
 
@@ -113,13 +100,9 @@ namespace
     {
         uint32_t value = readUeg(data, offset);
         if (value % 2 == 0)
-        {
             return -1 * (value / 2);
-        }
         else
-        {
             return (value + 1) / 2;
-        }
     }
 
     void skipScalingList(uint8_t *data, uint32_t size, uint32_t &offset)
@@ -168,7 +151,7 @@ bool H264Parser::parseSps(uint8_t *data, int size, int &width, int &height)
         readUeg(data, offset);
         readUeg(data, offset);
         readBits(data, 1, offset);
-        
+
         if (readBits(data, 1, offset))
         {
             for (uint8_t i = 0; i < (chromaFormatIdc != 3) ? 8 : 12; i++)
@@ -197,9 +180,7 @@ bool H264Parser::parseSps(uint8_t *data, int size, int &width, int &height)
         readEg(data, offset);
         readEg(data, offset);
         for (uint32_t i = 0; i < readUeg(data, offset); i++)
-        {
             readEg(data, offset);
-        }
     }
 
     readUeg(data, offset);
