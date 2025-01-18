@@ -161,11 +161,14 @@ bool H264Parser::parseSps(uint8_t *data, int size, int &width, int &height)
         profileIdc == 86 || profileIdc == 118 || profileIdc == 128)
     {
         uint32_t chromaFormatIdc = readUeg(data, offset);
+
         if (chromaFormatIdc == 3)
             readBits(data, 1, offset);
+
         readUeg(data, offset);
         readUeg(data, offset);
         readBits(data, 1, offset);
+        
         if (readBits(data, 1, offset))
         {
             for (uint8_t i = 0; i < (chromaFormatIdc != 3) ? 8 : 12; i++)
@@ -173,13 +176,9 @@ bool H264Parser::parseSps(uint8_t *data, int size, int &width, int &height)
                 if (readBits(data, 1, offset))
                 {
                     if (i < 6)
-                    {
                         skipScalingList(data, 16, offset);
-                    }
                     else
-                    {
                         skipScalingList(data, 64, offset);
-                    }
                 }
             }
         }
@@ -210,7 +209,9 @@ bool H264Parser::parseSps(uint8_t *data, int size, int &width, int &height)
     frameMbsOnlyFlag = readBits(data, 1, offset);
     if (!frameMbsOnlyFlag)
         readBits(data, 1, offset);
+
     readBits(data, 1, offset);
+
     if (readBits(data, 1, offset))
     {
         frameCropLeftOffset = readUeg(data, offset);

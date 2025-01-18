@@ -17,10 +17,10 @@ int main()
     int fileSize = file.tellg();
     file.seekg(0, std::ios::beg);
 
-    std::cout << "File size: " << fileSize << std::endl;
-
     uint8_t* buffer = new uint8_t[fileSize];
     file.read(reinterpret_cast<char*>(buffer), fileSize);
+
+    int width{0}, height{0};
 
     while(true)
     {
@@ -33,6 +33,7 @@ int main()
         if (isLastNal)
         {
             std::cout << "Last NAL" << std::endl;
+            std::cout << "Width: " << width << " Height: " << height << std::endl;
             break;
         }
         else
@@ -40,17 +41,9 @@ int main()
             std::cout << "NAL type: " << static_cast<int>(nalType) << " size: " << nalSize << std::endl;
         }
 
-        if (nalType == H264Parser::NalType::SPS)
+        if (nalType == H264Parser::NalType::SPS && width == 0 && height == 0)
         {
-            int width{0}, height{0};
-            if (H264Parser::parseSps(nal, nalSize, width, height))
-            {
-                std::cout << "Width: " << width << " Height: " << height << std::endl;
-            }
-            else
-            {
-                std::cerr << "Failed to parse SPS" << std::endl;
-            }
+            H264Parser::parseSps(nal, nalSize, width, height);
         }
 
         // Move to the next NAL
