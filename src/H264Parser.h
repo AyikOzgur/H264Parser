@@ -13,6 +13,10 @@ namespace H264Parser
         SEI = 6,
         SPS = 7,
         PPS = 8,
+        AUD = 9,
+        END_OF_SEQ = 10,
+        END_OF_STREAM = 11,
+        FILLER = 12
     };
 
     /**
@@ -21,9 +25,10 @@ namespace H264Parser
      * @param inputBufferSize The size of the input buffer
      * @param nalType Type of the found nal
      * @param nalSize Size of the found nal
+     * @param isLastNal True if the found nal is the last one in the buffer
      * @return Pointer to the found nal. It is just a pointer from the input buffer.
      */
-    uint8_t* getNal(const uint8_t* inputBuffer, int inputBufferSize, NalType& nalType, int& nalSize);
+    uint8_t* getNal(uint8_t* inputBuffer, int inputBufferSize, NalType& nalType, int& nalSize, bool& isLastNal);
 
     /**
      * @brief Parse the SPS buffer to get the width and height of the video
@@ -33,6 +38,6 @@ namespace H264Parser
      * @param height The height of the video
      * @return True if the SPS buffer was parsed successfully, false otherwise
      */
-    bool parseSps(const uint8_t* spsBuffer, int spsSize, int& width, int& height);
+    bool parseSps(uint8_t* spsBuffer, int spsSize, int& width, int& height);
 
 }
