@@ -42,7 +42,7 @@ int main()
 
         if (nalType == H264Parser::NalType::SPS)
         {
-            int width, height;
+            int width{0}, height{0};
             if (H264Parser::parseSps(nal, nalSize, width, height))
             {
                 std::cout << "Width: " << width << " Height: " << height << std::endl;
