@@ -38,7 +38,39 @@ int main()
         }
         else
         {
-            std::cout << "NAL type: " << static_cast<int>(nalType) << " size: " << nalSize << std::endl;
+            switch (nalType)
+            {
+                case H264Parser::NalType::SPS:
+                    std::cout << "SPS NAL size: " << nalSize << std::endl;
+                    break;
+                case H264Parser::NalType::PPS:
+                    std::cout << "PPS NAL size: " << nalSize << std::endl;
+                    break;
+                case H264Parser::NalType::IDR:
+                    std::cout << "IDR NAL size: " << nalSize << std::endl;
+                    break;
+                case H264Parser::NalType::NON_IDR:
+                    std::cout << "NON_IDR NAL size: " << nalSize << std::endl;
+                    break;
+                case H264Parser::NalType::SEI:
+                    std::cout << "SEI NAL size: " << nalSize << std::endl;
+                    break;
+                case H264Parser::NalType::AUD:
+                    std::cout << "AUD NAL size: " << nalSize << std::endl;
+                    break;
+                case H264Parser::NalType::END_OF_SEQ:
+                    std::cout << "END_OF_SEQ NAL size: " << nalSize << std::endl;
+                    break;
+                case H264Parser::NalType::END_OF_STREAM:
+                    std::cout << "END_OF_STREAM NAL size: " << nalSize << std::endl;
+                    break;
+                case H264Parser::NalType::FILLER:
+                    std::cout << "FILLER NAL size: " << nalSize << std::endl;
+                    break;
+                default:
+                    std::cout << "Unknown NAL size: " << nalSize << std::endl;
+                    break;
+            }
         }
 
         if (nalType == H264Parser::NalType::SPS && width == 0 && height == 0)
